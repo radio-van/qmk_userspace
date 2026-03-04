@@ -238,6 +238,32 @@ combo_t key_combos[] = {
 
 // }}} ----- COMBOS -----
 
+
+enum custom_keys { KC_PRINT_HUE = SAFE_RANGE };
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (!record->event.pressed) return true;
+
+    switch (keycode) {
+    case KC_PRINT_HUE: {
+#ifdef RGB_MATRIX_ENABLE
+        // rgb_matrix_get_hue() returns uint8_t [0..255]
+        uint8_t hue = rgb_matrix_get_hue();
+
+        // Build string and send
+        char buf[16];
+        snprintf(buf, sizeof(buf), "Hue: %d", hue);
+        SEND_STRING(buf);
+#else
+        SEND_STRING("RGB Matrix not enabled");
+#endif
+        return false; // don't send keycode further
+    }
+    }
+    return true;
+}
+
+
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -245,9 +271,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ╭──────────────────────────────────────────────────────────────────────────────────────╮ ╭────────────────────────────────────────────────────────────────────────Ъ────────╮
                 QK_LLCK,       KC_1,        KC_2,        KC_3,        KC_4,        KC_5,           KC_6,        KC_7,        KC_8,         KC_9,        KC_0,        KC_RBRC,
   // ├──────────────────────────────────────────────────────────────────────────────────────┤ ├────────────────────────────────────────────────────────────────────────Х────────┤
-                KC_QUOT,       KC_Q,        KC_W,        KC_E,        KC_R,        KC_T,           KC_Y,    TD(TD_UND),   TD(TD_MIN),      KC_O,        KC_P,        KC_LBRC,
+                KC_VOLU,       KC_Q,        KC_W,        KC_E,        KC_R,        KC_T,           KC_Y,    TD(TD_UND),   TD(TD_MIN),      KC_O,        KC_P,        KC_LBRC,
   // ├──────────────────────────────────────────────────────────────────────────────────────┤ ├────────────────────────────────────────────────────────────────────────Э────────┤
-                KC_BSLS,       KC_A,        KC_S,        HR_D,        HR_F,        HR_G,           KC_H,      HR_J,          HR_K,         ML_L,     TD(TD_COL),     KC_QUOT,
+                KC_VOLD,       KC_A,        KC_S,        HR_D,        HR_F,        HR_G,           KC_H,      HR_J,          HR_K,         ML_L,     TD(TD_COL),     KC_QUOT,
   // ├──────────────────────────────────────────────────────────────────────────────────────┤ ├─────────────────────────────────────────────────────────────────────────────────┤
                 PT_ESC,        KC_Z,        KC_X,        KC_C,    TD(TD_TIL),      KC_B,           KC_N,     TD(TD_PIP),     EX_COMM,      KC_DOT,      KC_SLSH,     PT_INS,
   // ╰──────────────────────────────────────────────────────────────────────────────────────┤ ├─────────────────────────────────────────────────────────────────────────────────╯
@@ -322,12 +348,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├──────────────────────────────────────────────────────────────────────────────────────┤ ├─────────────────────────────────────────────────────────────────────────────────┤
                 UG_NEXT,       XXXXXXX,   XXXXXXX,       XXXXXXX,     UG_VALD,     UG_VALU,        XXXXXXX,        XXXXXXX,    XXXXXXX,  XXXXXXX,   XXXXXXX,     XXXXXXX,
   // ├──────────────────────────────────────────────────────────────────────────────────────┤ ├─────────────────────────────────────────────────────────────────────────────────┤
-                UG_PREV,       XXXXXXX,   XXXXXXX,       XXXXXXX,     UG_HUED, TO(LAYER_GAME),     UG_PREV,        UG_TOGG,    UG_NEXT,  XXXXXXX,   XXXXXXX,     XXXXXXX,
+                UG_PREV,       XXXXXXX,   XXXXXXX,       XXXXXXX,     UG_HUED, TO(LAYER_GAME),     XXXXXXX,        XXXXXXX,    XXXXXXX,  XXXXXXX,   XXXXXXX,     XXXXXXX,
   // ├──────────────────────────────────────────────────────────────────────────────────────┤ ├─────────────────────────────────────────────────────────────────────────────────┤
-                UG_TOGG,       XXXXXXX,   XXXXXXX,       XXXXXXX,     UG_SATD,     UG_SATU,        UG_PREV,        UG_NEXT,    _______,  XXXXXXX,   XXXXXXX,     XXXXXXX,
+                UG_TOGG,       XXXXXXX,   XXXXXXX,       XXXXXXX,     UG_SATD,     UG_SATU,        XXXXXXX,        XXXXXXX,    _______,  XXXXXXX,   XXXXXXX,     XXXXXXX,
   // ╰──────────────────────────────────────────────────────────────────────────────────────┤ ├─────────────────────────────────────────────────────────────────────────────────╯
-                                                         QK_REP,      UG_VALD,     UG_VALU,        KC_VOLD,        KC_VOLU,
-                                                                      UG_SPDD,     UG_SPDU,        TO(LAYER_BASE) 
+                                                         QK_REP,      UG_VALD,     UG_VALU,        UG_PREV,        UG_NEXT,
+                                                                      UG_SPDD,     UG_SPDU,        UG_TOGG
   //                                       ╰────────────────────────────────────────────────╯ ╰──────────────────────────────────────────────╯
   ),
 
@@ -400,14 +426,15 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             for (uint8_t col = 0; col < MATRIX_COLS; ++col) {
                 uint8_t index = g_led_config.matrix_co[row][col];
 
-                if (index >= led_min && index < led_max && index != NO_LED &&
-                keymap_key_to_keycode(layer, (keypos_t){col,row}) > KC_TRNS) {
-                    rgb_matrix_set_color(index, RGB_TEAL);
+                if (index >= led_min && index < led_max && index != NO_LED) {
+                    switch(layer) {
+                        case LAYER_GAME:
+                            if (keymap_key_to_keycode(layer, (keypos_t){col,row}) == KC_W) {
+                                rgb_matrix_set_color(index, RGB_RED);
+                            }
+                    }
                 }
             }
-        }
-        if (layer == 1) {
-            rgb_matrix_set_color(0, RGB_RED);
         }
     }
     return false;
