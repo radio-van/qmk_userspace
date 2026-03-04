@@ -120,3 +120,5 @@
 // }}} --- RGB defaults
 
 #define TAPPING_TOGGLE 2
+
+#define SPLIT_LAYER_STATE_ENABLE
