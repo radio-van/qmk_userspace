@@ -252,7 +252,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
         // Build string and send
         char buf[16];
-        snprintf(buf, sizeof(buf), "Hue: %d", hue);
+        snprintf(buf, sizeof(buf), "HUE: %d", hue);
         SEND_STRING(buf);
 #else
         SEND_STRING("RGB Matrix not enabled");
@@ -346,7 +346,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ╭──────────────────────────────────────────────────────────────────────────────────────╮ ╭─────────────────────────────────────────────────────────────────────────────────╮
                 QK_BOOT,       XXXXXXX,   XXXXXXX,       XXXXXXX,     UG_SPDD,     UG_SPDU,        XXXXXXX,        XXXXXXX,    XXXXXXX,  XXXXXXX,   XXXXXXX,     QK_BOOT,
   // ├──────────────────────────────────────────────────────────────────────────────────────┤ ├─────────────────────────────────────────────────────────────────────────────────┤
-                UG_NEXT,       XXXXXXX,   XXXXXXX,       XXXXXXX,     UG_VALD,     UG_VALU,        XXXXXXX,        XXXXXXX,    XXXXXXX,  XXXXXXX,   XXXXXXX,     XXXXXXX,
+                KC_PRINT_HUE,  XXXXXXX,   XXXXXXX,       XXXXXXX,     UG_VALD,     UG_VALU,        XXXXXXX,        XXXXXXX,    XXXXXXX,  XXXXXXX,   XXXXXXX,     XXXXXXX,
   // ├──────────────────────────────────────────────────────────────────────────────────────┤ ├─────────────────────────────────────────────────────────────────────────────────┤
                 UG_PREV,       XXXXXXX,   XXXXXXX,       XXXXXXX,     UG_HUED, TO(LAYER_GAME),     XXXXXXX,        XXXXXXX,    XXXXXXX,  XXXXXXX,   XXXXXXX,     XXXXXXX,
   // ├──────────────────────────────────────────────────────────────────────────────────────┤ ├─────────────────────────────────────────────────────────────────────────────────┤
@@ -427,15 +427,85 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                 uint8_t index = g_led_config.matrix_co[row][col];
 
                 if (index >= led_min && index < led_max && index != NO_LED) {
+                    uint16_t keycode = keymap_key_to_keycode(layer, (keypos_t){col,row});
                     switch(layer) {
                         case LAYER_GAME:
-                            if (keymap_key_to_keycode(layer, (keypos_t){col,row}) == KC_W) {
-                                rgb_matrix_set_color(index, RGB_RED);
+                            if (keycode == KC_W) {
+                                rgb_matrix_set_color(index, RGB_ORANGE);
+                            } else if (keycode == KC_A) {
+                                rgb_matrix_set_color(index, RGB_ORANGE);
+                            } else if (keycode == KC_S) {
+                                rgb_matrix_set_color(index, RGB_ORANGE);
+                            } else if (keycode == KC_D) {
+                                rgb_matrix_set_color(index, RGB_ORANGE);
+                            } else if (keycode == TO(LAYER_BASE)) {
+                                rgb_matrix_set_color(index, RGB_YELLOW);
                             }
+                            break;
+                        case LAYER_SYM:
+                            if (keycode == SYM) {
+                                rgb_matrix_set_color(index, RGB_ORANGE);
+                            }
+                            break;
+                        case LAYER_NUM:
+                            if (keycode == KC_0 || keycode == LSFT_T(KC_1) || keycode == KC_2 || keycode == KC_3 || keycode == KC_4 || keycode == KC_5 || keycode == KC_6 || keycode == KC_7 || keycode == KC_8 || keycode == KC_9) {
+                                rgb_matrix_set_color(index, RGB_TEAL);
+                            } else if (keycode == LSFT_T(KC_1) || keycode == LCTL_T(KC_0)) {
+                                rgb_matrix_set_color(index, RGB_BLUE);
+                            }
+                            break;
+                        case LAYER_NAV:
+                            if (keycode == KC_LEFT) {
+                                rgb_matrix_set_color(index, RGB_TEAL);
+                            } else if (keycode == KC_RIGHT) {
+                                rgb_matrix_set_color(index, RGB_TEAL);
+                            } else if (keycode == KC_UP) {
+                                rgb_matrix_set_color(index, RGB_TEAL);
+                            } else if (keycode == KC_DOWN) {
+                                rgb_matrix_set_color(index, RGB_TEAL);
+                            }
+                            break;
+                        case LAYER_EXTRA:
+                            if (keycode == KC_COMM) {
+                                rgb_matrix_set_color(index, RGB_ORANGE);
+                            } else if (keycode == QK_BOOT) {
+                                rgb_matrix_set_color(index, RGB_RED);
+                            } else if (keycode == QK_REP) {
+                                rgb_matrix_set_color(index, RGB_ORANGE);
+                            } else if (keycode > KC_TRNS) {
+                                rgb_matrix_set_color(index, RGB_TEAL);
+                            }
+                            break;
+                        case LAYER_POINTER:
+                            if (charybdis_get_pointer_dragscroll_enabled()) {
+                                if (keycode == KC_BTN1 || keycode == KC_BTN2 || keycode == KC_BTN3) {
+                                    rgb_matrix_set_color(index, RGB_ORANGE);
+                                }
+                            } else {
+                                if (keycode == KC_BTN1 || keycode == KC_BTN2 || keycode == KC_BTN3) {
+                                    rgb_matrix_set_color(index, RGB_TEAL);
+                                }
+                            }
+                            break;
                     }
                 }
             }
         }
     }
     return false;
+}
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+    switch (get_highest_layer(state)) {
+    case LAYER_POINTER:
+        charybdis_set_pointer_dragscroll_enabled(0);
+        break;
+    case LAYER_GAME:
+        charybdis_set_pointer_dragscroll_enabled(0);
+        break;
+    default:
+        charybdis_set_pointer_dragscroll_enabled(1);
+        break;
+    }
+  return state;
 }
