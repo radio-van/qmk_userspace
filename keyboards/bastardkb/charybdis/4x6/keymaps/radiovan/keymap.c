@@ -70,6 +70,7 @@ enum {
     TD_PIP,
     TD_TIL,
     TD_UND,
+    TD_SLS,
 
     TD_COM,
 
@@ -157,12 +158,28 @@ void dance_grv(tap_dance_state_t *state, void *user_data) {
     }
 }
 
+void dance_min(tap_dance_state_t *state, void *user_data) {
+    switch (state->count) {
+        case 1:
+            SEND_STRING("i");
+            break;
+        case 2:
+            SEND_STRING("-");
+            reset_tap_dance(state);
+            break;
+        case 3:
+            SEND_STRING("--");
+            reset_tap_dance(state);
+            break;
+    }
+}
+
 tap_dance_action_t tap_dance_actions[] = {
     [TD_COL] = ACTION_TAP_DANCE_DOUBLE(KC_SCLN, KC_COLN),
-    [TD_MIN] = ACTION_TAP_DANCE_DOUBLE(KC_I, KC_MINS),
     [TD_PIP] = ACTION_TAP_DANCE_DOUBLE(KC_M, KC_PIPE),
     [TD_TIL] = ACTION_TAP_DANCE_DOUBLE(KC_V, KC_TILD),
     [TD_UND] = ACTION_TAP_DANCE_DOUBLE(KC_U, KC_UNDS),
+    [TD_SLS] = ACTION_TAP_DANCE_DOUBLE(KC_SLSH, KC_QUES),
 
     [TD_COM] = ACTION_TAP_DANCE_LAYER_TOGGLE(KC_COMM, LAYER_POINTER),
 
@@ -172,7 +189,9 @@ tap_dance_action_t tap_dance_actions[] = {
 
     [TD_DQT] = ACTION_TAP_DANCE_FN(dance_dqt),
     [TD_QUT] = ACTION_TAP_DANCE_FN(dance_qut),
-    [TD_GRV] = ACTION_TAP_DANCE_FN(dance_grv)
+    [TD_GRV] = ACTION_TAP_DANCE_FN(dance_grv),
+
+    [TD_MIN] = ACTION_TAP_DANCE_FN(dance_min)
 };
 
 // }}} ----- TAP DANCE -----
@@ -202,7 +221,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 // {{{ ----- COMBOS -----
 
-const uint16_t PROGMEM combo_ent_3_1[] = {LSFT_T(KC_J), LCTL_T(KC_K), KC_L, COMBO_END};
+const uint16_t PROGMEM combo_ent_3_1[] = {LSFT_T(KC_J), LCTL_T(KC_K), LT(LAYER_POINTER, KC_L), COMBO_END};
 const uint16_t PROGMEM combo_ent_3_2[] = {LSFT_T(KC_1), LCTL_T(KC_0), KC_PLUS, COMBO_END};
 const uint16_t PROGMEM combo_ent_3_3[] = {KC_PERC, KC_DLR, KC_PLUS, COMBO_END};
 
@@ -275,7 +294,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├──────────────────────────────────────────────────────────────────────────────────────┤ ├────────────────────────────────────────────────────────────────────────Э────────┤
                 KC_VOLD,       KC_A,        KC_S,        HR_D,        HR_F,        HR_G,           KC_H,      HR_J,          HR_K,         ML_L,     TD(TD_COL),     KC_QUOT,
   // ├──────────────────────────────────────────────────────────────────────────────────────┤ ├─────────────────────────────────────────────────────────────────────────────────┤
-                PT_ESC,        KC_Z,        KC_X,        KC_C,    TD(TD_TIL),      KC_B,           KC_N,     TD(TD_PIP),     EX_COMM,      KC_DOT,      KC_SLSH,     PT_INS,
+                PT_ESC,        KC_Z,        KC_X,        KC_C,    TD(TD_TIL),      KC_B,           KC_N,     TD(TD_PIP),     EX_COMM,      KC_DOT,   TD(TD_SLS),     PT_INS,
   // ╰──────────────────────────────────────────────────────────────────────────────────────┤ ├─────────────────────────────────────────────────────────────────────────────────╯
                                                       LCTL(KC_B),     KC_LALT, OSM(MOD_LGUI),      SYM,       NUM,
                                                                 OSM(MOD_LCTL), OSM(MOD_LSFT),      NAV
@@ -357,6 +376,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //                                       ╰────────────────────────────────────────────────╯ ╰──────────────────────────────────────────────╯
   ),
 
+  // TODO
+  // - fix three key combo
+  // - control brightness on layer color remap
+
   [LAYER_GAME] = LAYOUT(
   // ╭──────────────────────────────────────────────────────────────────────────────────────╮ ╭─────────────────────────────────────────────────────────────────────────────────╮
                 XXXXXXX,       KC_1,      KC_2,          KC_3,        KC_4,        KC_5,           XXXXXXX,   XXXXXXX,   XXXXXXX,  XXXXXXX,   XXXXXXX,     TO(LAYER_BASE),
@@ -367,8 +390,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├──────────────────────────────────────────────────────────────────────────────────────┤ ├─────────────────────────────────────────────────────────────────────────────────┤
                 KC_ESC,        KC_X,      KC_Z,          KC_C,        KC_V,        KC_G,           KC_N,      KC_M,      XXXXXXX,  XXXXXXX,   XXXXXXX,     XXXXXXX,
   // ╰──────────────────────────────────────────────────────────────────────────────────────┤ ├─────────────────────────────────────────────────────────────────────────────────╯
-                                                         QK_REP,      _______,     MS_BTN4,        MS_WHLU,   SNP_TOG,
-                                                                      _______,     _______,        MS_WHLD
+                                                         QK_REP,      KC_LALT,     MS_BTN4,        MS_WHLU,   SNP_TOG,
+                                                                      KC_LCTL,     KC_LSFT,        MS_WHLD
   //                                       ╰────────────────────────────────────────────────╯ ╰──────────────────────────────────────────────╯
   ),
 };
@@ -431,27 +454,51 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                     switch(layer) {
                         case LAYER_GAME:
                             if (keycode == KC_W) {
-                                rgb_matrix_set_color(index, RGB_ORANGE);
+                                rgb_matrix_set_color(index, RGB_RED);
                             } else if (keycode == KC_A) {
-                                rgb_matrix_set_color(index, RGB_ORANGE);
+                                rgb_matrix_set_color(index, RGB_RED);
                             } else if (keycode == KC_S) {
-                                rgb_matrix_set_color(index, RGB_ORANGE);
+                                rgb_matrix_set_color(index, RGB_RED);
                             } else if (keycode == KC_D) {
-                                rgb_matrix_set_color(index, RGB_ORANGE);
+                                rgb_matrix_set_color(index, RGB_RED);
                             } else if (keycode == TO(LAYER_BASE)) {
                                 rgb_matrix_set_color(index, RGB_YELLOW);
                             }
-                            break;
-                        case LAYER_SYM:
-                            if (keycode == SYM) {
+                            if (keycode == KC_BTN1 || keycode == KC_BTN2 || keycode == KC_BTN3 || keycode == KC_BTN4) {
                                 rgb_matrix_set_color(index, RGB_ORANGE);
                             }
                             break;
+                        case LAYER_SYM:
+                            if (keycode == LT(LAYER_SYM, KC_SPC)) {
+                                rgb_matrix_set_color(index, RGB_ORANGE);
+                            } else if (keycode == QK_LLCK) {
+                                rgb_matrix_set_color(index, RGB_RED);
+                            }
+                            rgb_matrix_set_color(1, RGB_RED);
+                            break;
                         case LAYER_NUM:
-                            if (keycode == KC_0 || keycode == LSFT_T(KC_1) || keycode == KC_2 || keycode == KC_3 || keycode == KC_4 || keycode == KC_5 || keycode == KC_6 || keycode == KC_7 || keycode == KC_8 || keycode == KC_9) {
+                            if (keycode == LCTL_T(KC_0)) {
+                                rgb_matrix_set_color(index, RGB_WHITE);
+                            } else if (keycode == LSFT_T(KC_1)) {
+                                rgb_matrix_set_color(index, RGB_RED);
+                            } else if (keycode == KC_2) {
+                                rgb_matrix_set_color(index, RGB_ORANGE);
+                            } else if (keycode == KC_3) {
+                                rgb_matrix_set_color(index, RGB_YELLOW);
+                            } else if (keycode == KC_4) {
+                                rgb_matrix_set_color(index, RGB_GREEN);
+                            } else if (keycode == KC_5) {
                                 rgb_matrix_set_color(index, RGB_TEAL);
-                            } else if (keycode == LSFT_T(KC_1) || keycode == LCTL_T(KC_0)) {
+                            } else if (keycode == KC_6) {
                                 rgb_matrix_set_color(index, RGB_BLUE);
+                            } else if (keycode == KC_7) {
+                                rgb_matrix_set_color(index, RGB_MAGENTA);
+                            } else if (keycode == KC_8) {
+                                rgb_matrix_set_color(index, RGB_TURQUOISE);
+                            } else if (keycode == KC_9) {
+                                rgb_matrix_set_color(index, RGB_CYAN);
+                            } else if (keycode == QK_LLCK) {
+                                rgb_matrix_set_color(index, RGB_RED);
                             }
                             break;
                         case LAYER_NAV:
@@ -463,6 +510,18 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                                 rgb_matrix_set_color(index, RGB_TEAL);
                             } else if (keycode == KC_DOWN) {
                                 rgb_matrix_set_color(index, RGB_TEAL);
+                            } else if (keycode == KC_HOME) {
+                                rgb_matrix_set_color(index, RGB_CYAN);
+                            } else if (keycode == KC_END) {
+                                rgb_matrix_set_color(index, RGB_CYAN);
+                            } else if (keycode == KC_PGUP) {
+                                rgb_matrix_set_color(index, RGB_SPRINGGREEN);
+                            } else if (keycode == KC_PGDN) {
+                                rgb_matrix_set_color(index, RGB_SPRINGGREEN);
+                            } else if (keycode == QK_REP) {
+                                rgb_matrix_set_color(index, RGB_ORANGE);
+                            } else if (keycode == QK_LLCK) {
+                                rgb_matrix_set_color(index, RGB_RED);
                             }
                             break;
                         case LAYER_EXTRA:
@@ -485,6 +544,9 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                                 if (keycode == KC_BTN1 || keycode == KC_BTN2 || keycode == KC_BTN3) {
                                     rgb_matrix_set_color(index, RGB_TEAL);
                                 }
+                            }
+                            if (keycode == QK_LLCK) {
+                                rgb_matrix_set_color(index, RGB_RED);
                             }
                             break;
                     }
