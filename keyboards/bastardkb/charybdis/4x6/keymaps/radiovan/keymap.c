@@ -249,7 +249,7 @@ combo_t key_combos[] = {
     COMBO(combo_tab_1, KC_TAB),
     COMBO(combo_tab_2, KC_TAB),
     COMBO(combo_tab_3, KC_TAB),
-    
+
     COMBO(combo_bks_1, KC_BSPC),
     COMBO(combo_bks_2, KC_BSPC),
     COMBO(combo_bks_3, KC_BSPC)
@@ -305,14 +305,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ╭──────────────────────────────────────────────────────────────────────────────────────╮ ╭─────────────────────────────────────────────────────────────────────────────────╮
                 _______,       KC_1,      KC_2,          KC_3,        KC_4,        KC_5,           KC_6,        KC_7,        KC_8,        KC_9,        KC_0,        _______,
   // ├──────────────────────────────────────────────────────────────────────────────────────┤ ├─────────────────────────────────────────────────────────────────────────────────┤
-                XXXXXXX,       XXXXXXX,   XXXXXXX,       KC_EXLM,     TD(TD_CBR),  KC_RCBR,        KC_AMPR,     KC_AT,       KC_ASTR,     KC_HASH,     _______,     _______,
+                XXXXXXX,       XXXXXXX,   XXXXXXX,       KC_PLUS,    TD(TD_CBR),  KC_RCBR,        KC_EXLM,     KC_AT,       KC_ASTR,     KC_HASH,     _______,     _______,
   // ├──────────────────────────────────────────────────────────────────────────────────────┤ ├─────────────────────────────────────────────────────────────────────────────────┤
-                XXXXXXX,       KC_TILD,   KC_MINS,       KC_PIPE,     TD(TD_PAR),  KC_RPRN,        KC_CIRC,     KC_PERC,     KC_DLR,      KC_PLUS,     _______,     _______,
+                XXXXXXX,       KC_TILD,   KC_PIPE,       KC_EQL,     TD(TD_PAR),  KC_RPRN,        KC_AMPR,     KC_PERC,     KC_CIRC,     KC_DLR,      _______,     _______,
   // ├──────────────────────────────────────────────────────────────────────────────────────┤ ├─────────────────────────────────────────────────────────────────────────────────┤
-                _______,       KC_BSLS,   XXXXXXX,       KC_UNDS,     TD(TD_BRC),  KC_RBRC,        KC_LT,       KC_GT,       _______,     _______,     _______,     _______,
+                _______,       KC_BSLS,   KC_UNDS,       KC_MINS,    TD(TD_BRC),  KC_RBRC,        KC_LT,       KC_GT,       _______,     _______,     _______,     _______,
   // ╰──────────────────────────────────────────────────────────────────────────────────────┤ ├─────────────────────────────────────────────────────────────────────────────────╯
-                                                         TD(TD_GRV),  TD(TD_DQT),  TD(TD_QUT),     _______,     XXXXXXX,
-                                                                      KC_BSLS,       KC_SLSH,      XXXXXXX
+                                                         TD(TD_GRV),  TD(TD_DQT),  TD(TD_QUT),    _______,     XXXXXXX,
+                                                                      KC_BSLS,       KC_SLSH,     XXXXXXX
   //                                       ╰────────────────────────────────────────────────╯ ╰──────────────────────────────────────────────╯
   ),
 
@@ -320,11 +320,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ╭──────────────────────────────────────────────────────────────────────────────────────╮ ╭─────────────────────────────────────────────────────────────────────────────────╮
                 _______,        KC_F1,     KC_F2,         KC_F3,       KC_F4,       KC_F5,          KC_F6,       KC_F7,      KC_F8,     KC_F9,     KC_F10,      XXXXXXX,
   // ├──────────────────────────────────────────────────────────────────────────────────────┤ ├─────────────────────────────────────────────────────────────────────────────────┤
-                KC_F2,         XXXXXXX,   XXXXXXX,       KC_LT,       KC_9,        XXXXXXX,        XXXXXXX,     KC_4,       KC_GT,     XXXXXXX,   _______,     XXXXXXX,
+                KC_F2,         XXXXXXX,   XXXXXXX,       KC_LT,       KC_9,        XXXXXXX,        KC_PLUS,     KC_4,       KC_GT,     XXXXXXX,   _______,     XXXXXXX,
   // ├──────────────────────────────────────────────────────────────────────────────────────┤ ├─────────────────────────────────────────────────────────────────────────────────┤
-                KC_F3,         XXXXXXX,   KC_MINS,  LCTL_T(KC_6),  LSFT_T(KC_5),   _______,        KC_EQL, LSFT_T(KC_1), LCTL_T(KC_0), KC_PLUS,   _______,     XXXXXXX,
+                KC_F3,         XXXXXXX,   XXXXXXX,  LCTL_T(KC_6),  LSFT_T(KC_5),   _______,        KC_EQL, LSFT_T(KC_1), LCTL_T(KC_0), KC_UNDS,   _______,     XXXXXXX,
   // ├──────────────────────────────────────────────────────────────────────────────────────┤ ├─────────────────────────────────────────────────────────────────────────────────┤
-                KC_F4,         XXXXXXX,   XXXXXXX,       KC_7,        KC_8,        XXXXXXX,        KC_UNDS,     KC_2,       KC_3,      _______,   _______,     XXXXXXX,
+                KC_F4,         XXXXXXX,   XXXXXXX,       KC_7,        KC_8,        XXXXXXX,        KC_MINS,     KC_2,       KC_3,      _______,   _______,     XXXXXXX,
   // ╰──────────────────────────────────────────────────────────────────────────────────────┤ ├─────────────────────────────────────────────────────────────────────────────────╯
                                                          TD(TD_GRV),  TD(TD_DQT),  TD(TD_QUT),     XXXXXXX,     _______,
                                                                       KC_BSLS,       KC_SLSH,      XXXXXXX
@@ -342,7 +342,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 XXXXXXX,       XXXXXXX,   XXXXXXX,       XXXXXXX,     KC_PGDN,     XXXXXXX,        XXXXXXX,     KC_END,     KC_PGDN,  XXXXXXX,   XXXXXXX,     XXXXXXX,
   // ╰──────────────────────────────────────────────────────────────────────────────────────┤ ├─────────────────────────────────────────────────────────────────────────────────╯
                                                          QK_REP,      _______,     _______,        XXXXXXX,     XXXXXXX,
-                                                                      _______,     _______,        _______  
+                                                                      _______,     _______,        _______
   //                                       ╰────────────────────────────────────────────────╯ ╰──────────────────────────────────────────────╯
   ),
 
@@ -474,7 +474,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                             } else if (keycode == QK_LLCK) {
                                 rgb_matrix_set_color(index, RGB_RED);
                             }
-                            rgb_matrix_set_color(1, RGB_RED);
+                            rgb_matrix_set_color(0, RGB_RED);
                             break;
                         case LAYER_NUM:
                             if (keycode == LCTL_T(KC_0)) {
@@ -485,9 +485,9 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                                 rgb_matrix_set_color(index, RGB_ORANGE);
                             } else if (keycode == KC_3) {
                                 rgb_matrix_set_color(index, RGB_YELLOW);
-                            } else if (keycode == KC_4) {
+                            } else if (keycode == LCTL_T(KC_4)) {
                                 rgb_matrix_set_color(index, RGB_GREEN);
-                            } else if (keycode == KC_5) {
+                            } else if (keycode == LSFT_T(KC_5)) {
                                 rgb_matrix_set_color(index, RGB_TEAL);
                             } else if (keycode == KC_6) {
                                 rgb_matrix_set_color(index, RGB_BLUE);
@@ -503,25 +503,23 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                             break;
                         case LAYER_NAV:
                             if (keycode == KC_LEFT) {
-                                rgb_matrix_set_color(index, RGB_TEAL);
+                                rgb_matrix_set_color(index, RGB_TURQUOISE);
                             } else if (keycode == KC_RIGHT) {
-                                rgb_matrix_set_color(index, RGB_TEAL);
+                                rgb_matrix_set_color(index, RGB_TURQUOISE);
                             } else if (keycode == KC_UP) {
-                                rgb_matrix_set_color(index, RGB_TEAL);
+                                rgb_matrix_set_color(index, RGB_TURQUOISE);
                             } else if (keycode == KC_DOWN) {
-                                rgb_matrix_set_color(index, RGB_TEAL);
+                                rgb_matrix_set_color(index, RGB_TURQUOISE);
                             } else if (keycode == KC_HOME) {
-                                rgb_matrix_set_color(index, RGB_CYAN);
+                                rgb_matrix_set_color(index, RGB_GOLDENROD);
                             } else if (keycode == KC_END) {
-                                rgb_matrix_set_color(index, RGB_CYAN);
+                                rgb_matrix_set_color(index, RGB_GOLDENROD);
                             } else if (keycode == KC_PGUP) {
                                 rgb_matrix_set_color(index, RGB_SPRINGGREEN);
                             } else if (keycode == KC_PGDN) {
                                 rgb_matrix_set_color(index, RGB_SPRINGGREEN);
                             } else if (keycode == QK_REP) {
                                 rgb_matrix_set_color(index, RGB_ORANGE);
-                            } else if (keycode == QK_LLCK) {
-                                rgb_matrix_set_color(index, RGB_RED);
                             }
                             break;
                         case LAYER_EXTRA:
