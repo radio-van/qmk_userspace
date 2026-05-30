@@ -235,7 +235,7 @@ const uint16_t PROGMEM combo_tab_3[] = {KC_PIPE, TD(TD_PAR), COMBO_END};
 
 const uint16_t PROGMEM combo_bks_1[] = {LSFT_T(KC_J), LCTL_T(KC_K), COMBO_END};
 const uint16_t PROGMEM combo_bks_2[] = {LSFT_T(KC_1), LCTL_T(KC_0), COMBO_END};
-const uint16_t PROGMEM combo_bks_3[] = {KC_PERC, KC_DLR, COMBO_END};
+const uint16_t PROGMEM combo_bks_3[] = {KC_PERC, KC_CIRC, COMBO_END};
 
 combo_t key_combos[] = {
     COMBO(combo_ent_3_1, KC_ENT),
@@ -305,7 +305,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ╭──────────────────────────────────────────────────────────────────────────────────────╮ ╭─────────────────────────────────────────────────────────────────────────────────╮
                 _______,       KC_1,      KC_2,          KC_3,        KC_4,        KC_5,           KC_6,        KC_7,        KC_8,        KC_9,        KC_0,        _______,
   // ├──────────────────────────────────────────────────────────────────────────────────────┤ ├─────────────────────────────────────────────────────────────────────────────────┤
-                XXXXXXX,       XXXXXXX,   XXXXXXX,       KC_PLUS,    TD(TD_CBR),  KC_RCBR,        KC_EXLM,     KC_AT,       KC_ASTR,     KC_HASH,     _______,     _______,
+                XXXXXXX,       XXXXXXX,   XXXXXXX,       KC_PLUS,    TD(TD_CBR),  KC_RCBR,        KC_EXLM,     KC_AT,       KC_HASH,     KC_ASTR,     _______,     _______,
   // ├──────────────────────────────────────────────────────────────────────────────────────┤ ├─────────────────────────────────────────────────────────────────────────────────┤
                 XXXXXXX,       KC_TILD,   KC_PIPE,       KC_EQL,     TD(TD_PAR),  KC_RPRN,        KC_AMPR,     KC_PERC,     KC_CIRC,     KC_DLR,      _______,     _______,
   // ├──────────────────────────────────────────────────────────────────────────────────────┤ ├─────────────────────────────────────────────────────────────────────────────────┤
